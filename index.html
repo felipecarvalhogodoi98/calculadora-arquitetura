@@ -88,11 +88,11 @@
       content: '';
       position: absolute;
       top: -4px;
+      left: var(--slider-pos, 0);
       width: 10px;
       height: 28px;
       background: var(--text);
       border-radius: 3px;
-      transform: translateX(var(--slider-pos, 50%));
       transition: transform 0.2s ease;
     }
 
@@ -156,9 +156,16 @@
       });
 
       document.getElementById('score').textContent = total;
-
-      const posPercent = ((total + 20) / 40) * 100;
-      document.getElementById('bar').style.setProperty('--slider-pos', `${posPercent}%`);
+      
+      const barWidth = document.getElementById('bar').offsetWidth;
+      const maxScore = 20;
+      const minScore = -20;
+      const range = maxScore - minScore;
+      const peace = barWidth / range;
+      const currentScore = total + 20;
+      const barPos = currentScore * peace - 5; // 10px for the width of the slider
+      document.getElementById('bar').style.setProperty('--slider-pos', `${barPos}px`);
+      
 
       const recommendation = getRecommendation(total);
       document.getElementById('recommendation').textContent = recommendation;
